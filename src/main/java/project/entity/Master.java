@@ -17,9 +17,9 @@ public class Master {
     private String name;
     private String tel;
     private Double percent;
-    @OneToMany(mappedBy = "master", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "master", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Account> accounts = new HashSet<>();
-    @OneToMany(mappedBy = "master", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "master", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Order> orders = new ArrayList<>();
 
 

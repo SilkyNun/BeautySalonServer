@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.entity.Order;
 import project.exceptions.NotFoundException;
+import project.model.OrderModel;
 import project.service.OrderService;
 
 @RestController
@@ -22,15 +23,27 @@ public class OrderController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> getOrderById(@PathVariable("id") Long id) {
-        try {
-            return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
     }
 
-    @PostMapping("{masterId}")
-    public ResponseEntity<Order> addOrder(@RequestBody Order order, @PathVariable("masterId") Long masterId) {
-        return new ResponseEntity<>(orderService.addOrder(masterId, order), HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<Order> addOrder(@RequestBody OrderModel orderModel) {
+        return new ResponseEntity<>(orderService.addOrder(orderModel), HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<Order> updateOrder(@RequestBody OrderModel order) {
+        return new ResponseEntity<>(orderService.updateOrder(order), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteOrder(@RequestBody Order order) {
+        orderService.deleteOrder(order);
+        return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException notFoundException) {
+        return new ResponseEntity<>(notFoundException.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

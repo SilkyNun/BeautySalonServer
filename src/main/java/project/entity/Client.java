@@ -21,7 +21,7 @@ public class Client {
     private Long id;
     private String name;
     private String tel;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "client")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 
     @Override
