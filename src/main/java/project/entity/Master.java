@@ -1,5 +1,6 @@
 package project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,8 +18,10 @@ public class Master {
     private String name;
     private String tel;
     private Double percent;
+    @JsonIgnore
     @OneToMany(mappedBy = "master", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Account> accounts = new HashSet<>();
+    @JsonIgnore
     @OneToMany(mappedBy = "master", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Order> orders = new ArrayList<>();
 

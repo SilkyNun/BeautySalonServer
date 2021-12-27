@@ -12,6 +12,7 @@ import project.service.ClientService;
 
 @RestController
 @RequestMapping("clients")
+@CrossOrigin
 @AllArgsConstructor
 public class ClientController {
     private ClientService clientService;

@@ -1,19 +1,28 @@
 package project.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.entity.Client;
 import project.entity.Master;
 import project.entity.Order;
 import project.exceptions.NotFoundException;
 import project.model.OrderModel;
+import project.model.OrderSorted;
 import project.repository.OrderRepository;
 
+import javax.swing.text.DateFormatter;
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class OrderService {
     private MasterService masterService;
     private ClientService clientService;
@@ -54,5 +63,16 @@ public class OrderService {
         order.setClient(null);
         order.setMaster(null);
         orderRepository.delete(order);
+    }
+
+    public Iterable<OrderSorted> getOrdersByDate() {
+        Collection<Order> ordersRaw = (Collection<Order>) orderRepository.findAll();
+        List<OrderSorted> list = ordersRaw.stream()
+                .collect(Collectors.groupingBy(order -> order.getStart().getDayOfMonth()))
+                .values().stream()
+                .map(orders -> new OrderSorted(orders.get(0).getStart().format(DateTimeFormatter.ofPattern("dd MMMM")), orders))
+                .toList();
+        list.forEach(orderSorted -> orderSorted.getOrders().sort(Comparator.comparing(Order::getStart)));
+        return list;
     }
 }

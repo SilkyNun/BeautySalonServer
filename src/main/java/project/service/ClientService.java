@@ -34,7 +34,7 @@ public class ClientService {
         Client clientToUpdate = getClientById(client.getId());
         clientToUpdate.setName(client.getName() == null ? clientToUpdate.getName() : client.getName());
         clientToUpdate.setTel(client.getTel() == null ? clientToUpdate.getTel() : client.getTel());
-        clientToUpdate.setOrders(client.getOrders() == null ? clientToUpdate.getOrders() : client.getOrders());
+        clientToUpdate.setOrders(client.getOrders().isEmpty() ? clientToUpdate.getOrders() : client.getOrders());
         return clientRepository.save(clientToUpdate);
     }
 

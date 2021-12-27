@@ -11,6 +11,7 @@ import project.service.MasterService;
 
 @RestController
 @RequestMapping("/masters")
+@CrossOrigin
 @AllArgsConstructor
 @Slf4j
 public class MasterController {

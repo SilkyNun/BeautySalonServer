@@ -1,10 +1,12 @@
 package project.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -19,8 +21,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double price;
-    private Date start;
-    private Date finish;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime start;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime finish;
     @ManyToOne
     @JoinColumn(name = "master_id")
     @JsonIgnore
@@ -31,7 +35,7 @@ public class Order {
     private Client client;
 
 
-    public Order(Double price, Date start, Date finish, Master master, Client client) {
+    public Order(Double price, LocalDateTime start, LocalDateTime finish, Master master, Client client) {
         this.price = price;
         this.start = start;
         this.finish = finish;

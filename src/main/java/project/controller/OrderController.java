@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import project.entity.Order;
 import project.exceptions.NotFoundException;
 import project.model.OrderModel;
+import project.model.OrderSorted;
 import project.service.OrderService;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin
 @RequestMapping("/orders")
 public class OrderController {
     private OrderService orderService;
@@ -19,6 +21,11 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<Iterable<Order>> getAllOrders() {
         return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
+    }
+
+    @GetMapping("sorted")
+    public ResponseEntity<Iterable<OrderSorted>> getSortedOrders() {
+        return new ResponseEntity<>(orderService.getOrdersByDate(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
