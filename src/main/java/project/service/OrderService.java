@@ -16,7 +16,9 @@ import javax.transaction.Transactional;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,6 +70,7 @@ public class OrderService {
     public Iterable<OrderSorted> getOrdersByDate() {
         Collection<Order> ordersRaw = (Collection<Order>) orderRepository.findAll();
         List<OrderSorted> list = ordersRaw.stream()
+                .filter(order -> order.getStart().isAfter(LocalDateTime.now()))
                 .collect(Collectors.groupingBy(order -> order.getStart().getDayOfMonth()))
                 .values().stream()
                 .map(orders -> new OrderSorted(orders.get(0).getStart().format(DateTimeFormatter.ofPattern("dd MMMM")), orders))

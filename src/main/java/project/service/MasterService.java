@@ -6,6 +6,7 @@ import project.entity.Master;
 import project.exceptions.NotFoundException;
 import project.repository.MasterRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service @AllArgsConstructor
@@ -14,6 +15,8 @@ public class MasterService {
 
 
     public Master addMaster(Master master) {
+        master.setCreatedAt(LocalDateTime.now());
+        master.setUpdatedAt(LocalDateTime.now());
         return masterRepository.save(master);
     }
 
@@ -36,6 +39,8 @@ public class MasterService {
         masterUpd.setTel(master.getTel() == null ? masterUpd.getTel() : master.getTel());
         masterUpd.setOrders(master.getOrders().isEmpty() ? masterUpd.getOrders() : master.getOrders());
         masterUpd.setAccounts(master.getAccounts().isEmpty() ? masterUpd.getAccounts() : master.getAccounts());
+        masterUpd.setCreatedAt(master.getCreatedAt() == null ? masterUpd.getCreatedAt() : master.getCreatedAt());
+        masterUpd.setUpdatedAt(LocalDateTime.now());
         return masterRepository.save(masterUpd);
     }
 

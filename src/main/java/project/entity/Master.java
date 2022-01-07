@@ -1,9 +1,11 @@
 package project.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -18,6 +20,10 @@ public class Master {
     private String name;
     private String tel;
     private Double percent;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime updatedAt;
     @JsonIgnore
     @OneToMany(mappedBy = "master", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Account> accounts = new HashSet<>();
