@@ -9,6 +9,8 @@ import project.entity.Master;
 import project.exceptions.NotFoundException;
 import project.service.MasterService;
 
+import static project.service.MasterService.*;
+
 @RestController
 @RequestMapping("/masters")
 @CrossOrigin
@@ -29,6 +31,13 @@ public class MasterController {
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+//    return list of masters sorted by creation date in ascending or descending order
+    @GetMapping("/sorted")
+    public ResponseEntity<Iterable<Master>> getAllMastersSorted(
+            @RequestParam(value = "order", defaultValue = "asc") String order) {
+        return new ResponseEntity<>(masterService.getAllMastersSorted(SortOrder.toSortOrder(order)), HttpStatus.OK);
     }
 
     @PostMapping

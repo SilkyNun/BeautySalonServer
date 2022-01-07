@@ -7,12 +7,25 @@ import project.exceptions.NotFoundException;
 import project.repository.MasterRepository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Service @AllArgsConstructor
 public class MasterService {
     private MasterRepository masterRepository;
 
+    public enum SortOrder {
+        ASC,
+        DESC;
+
+        public static SortOrder toSortOrder(String order) {
+            if (order.equalsIgnoreCase(SortOrder.DESC.name())) {
+                return SortOrder.DESC;
+            }
+            return SortOrder.ASC;
+        }
+    }
 
     public Master addMaster(Master master) {
         master.setCreatedAt(LocalDateTime.now());
@@ -32,6 +45,12 @@ public class MasterService {
         return master.get();
     }
 
+    public Iterable<Master> getAllMastersSorted(SortOrder order) {
+        return ((List<Master>) masterRepository.findAll()).stream()
+                .sorted(defineSortOrder(order))
+                .toList();
+    }
+
     public Master updateMaster(Master master) {
         Master masterUpd = getMasterById(master.getId());
         masterUpd.setName(master.getName() == null ? masterUpd.getName() : master.getName());
@@ -46,6 +65,13 @@ public class MasterService {
 
     public void deleteMaster(Master master) {
         masterRepository.delete(master);
+    }
+
+    private Comparator<Master> defineSortOrder(SortOrder order) {
+        return switch (order) {
+            case ASC -> (m1, m2) -> m1.getCreatedAt().compareTo(m2.getCreatedAt());
+            case DESC -> (m1, m2) -> m2.getCreatedAt().compareTo(m1.getCreatedAt());
+        };
     }
 
 }
