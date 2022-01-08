@@ -1,5 +1,7 @@
 package project.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import project.entity.Order;
@@ -12,6 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class OrderSorted {
     private String title;
+    @JsonProperty("appointments")
     private List<Order> orders = new ArrayList<>();
 
     @Override
