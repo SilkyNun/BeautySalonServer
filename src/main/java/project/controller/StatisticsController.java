@@ -17,9 +17,14 @@ import static project.service.StatisticsService.*;
 public class StatisticsController {
     private StatisticsService statisticsService;
 
-    @GetMapping("{id}")
+    @GetMapping("/masters/{id}")
     public ResponseEntity<MasterStatistics> getMasterStatistics(@PathVariable("id") Long id) {
         return new ResponseEntity<>(statisticsService.getMasterStatistics(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/masters")
+    public ResponseEntity<Iterable<MasterStatistics>> getMastersStatistics() {
+        return new ResponseEntity<>(statisticsService.getAllMastersStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/day")

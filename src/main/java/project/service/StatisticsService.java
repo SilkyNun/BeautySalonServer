@@ -21,17 +21,17 @@ public class StatisticsService {
         MONTH
     }
 
+    public Iterable<MasterStatistics> getAllMastersStatistics() {
+        List<Master> allMasters = (List<Master>) masterService.getAllMasters();
+        return allMasters.stream()
+                .map(this::countMasterStatistics)
+                .sorted(Comparator.comparing(MasterStatistics::getName))
+                .toList();
+    }
+
     public MasterStatistics getMasterStatistics(Long masterId) {
         Master master = masterService.getMasterById(masterId);
-        MasterStatistics masterStatistics = MasterStatistics.toMasterStatistics(master);
-
-        Double todayIncome = todayIncome(master);
-        Double monthIncome = monthIncome(master);
-
-        masterStatistics.setTodayNetIncome(todayIncome * master.getPercent());
-        masterStatistics.setMonthNetIncome(monthIncome * master.getPercent());
-
-        return masterStatistics;
+        return countMasterStatistics(master);
     }
 
     public SalonStatistics getSalonStatistics(Period period) {
@@ -59,6 +59,19 @@ public class StatisticsService {
             case TODAY -> (ms1, ms2) -> ms2.getTodayNetIncome().compareTo(ms1.getTodayNetIncome());
             case MONTH -> (ms1, ms2) -> ms2.getMonthNetIncome().compareTo(ms1.getMonthNetIncome());
         };
+    }
+
+
+    private MasterStatistics countMasterStatistics(Master master) {
+        MasterStatistics masterStatistics = MasterStatistics.toMasterStatistics(master);
+
+        Double todayIncome = todayIncome(master);
+        Double monthIncome = monthIncome(master);
+
+        masterStatistics.setTodayNetIncome(todayIncome * master.getPercent());
+        masterStatistics.setMonthNetIncome(monthIncome * master.getPercent());
+
+        return masterStatistics;
     }
 
     private Double countIncome(Master master, Period period) {
