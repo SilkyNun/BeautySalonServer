@@ -15,6 +15,7 @@
 	<description>Server for beauty salon</description>
 	<properties>
 		<java.version>16</java.version>
+		<maven.compiler.release>16</maven.compiler.release>
 	</properties>
 	<dependencies>
 		<dependency>
