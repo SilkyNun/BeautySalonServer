@@ -26,11 +26,11 @@ public class Order {
     private LocalDateTime finish;
     @ManyToOne
     @JoinColumn(name = "master_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Master master;
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Client client;
 
 
@@ -41,16 +41,16 @@ public class Order {
         this.master = master;
         this.client = client;
     }
-
-    @JsonGetter("masterId")
-    public Long getMasterId() {
-        return master.getId();
-    }
-
-    @JsonGetter("clientId")
-    public Long getClientId() {
-        return client.getId();
-    }
+//
+//    @JsonGetter("masterId")
+//    public Long getMasterId() {
+//        return master.getId();
+//    }
+//
+//    @JsonGetter("clientId")
+//    public Long getClientId() {
+//        return client.getId();
+//    }
 
     @Override
     public boolean equals(Object o) {

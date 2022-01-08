@@ -76,6 +76,7 @@ public class OrderService {
                 .map(orders -> new OrderSorted(orders.get(0).getStart().format(DateTimeFormatter.ofPattern("dd MMMM")), orders))
                 .toList();
         list.forEach(orderSorted -> orderSorted.getOrders().sort(Comparator.comparing(Order::getStart)));
+        log.info(list.toString());
         return list;
     }
 }
