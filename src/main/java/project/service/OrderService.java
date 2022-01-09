@@ -73,7 +73,7 @@ public class OrderService {
 //                .filter(order -> order.getStart().isAfter(LocalDateTime.now()))
                 .collect(Collectors.groupingBy(order -> order.getStart().getDayOfMonth()))
                 .values().stream()
-                .map(orders -> new OrderSorted(orders.get(0).getStart().format(DateTimeFormatter.ofPattern("dd MMMM")), orders))
+                .map(orders -> new OrderSorted(orders.get(0).getStart().format(DateTimeFormatter.ofPattern("dd MMMM", Locale.forLanguageTag("ru-RU"))), orders))
                 .toList();
         list.forEach(orderSorted -> orderSorted.getOrders().sort(Comparator.comparing(Order::getStart)));
         log.info(list.toString());
