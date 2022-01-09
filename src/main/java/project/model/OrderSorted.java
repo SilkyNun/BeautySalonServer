@@ -14,7 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class OrderSorted {
     private String title;
-    @JsonProperty("appointments")
+    @JsonProperty("data")
     private List<Order> orders = new ArrayList<>();
 
     @Override
