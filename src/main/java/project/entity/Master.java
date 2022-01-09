@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -18,8 +19,14 @@ public class Master {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String name;
+    @NotNull
+    @Pattern(regexp = "^(80|\\+375)\\(\\d{2}\\)\\d{3}-\\d{2}-\\d{2}$")
     private String tel;
+    @NotNull
+    @DecimalMin(value = "0.00")
+    @DecimalMax(value = "1.00")
     private Double percent;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime createdAt;

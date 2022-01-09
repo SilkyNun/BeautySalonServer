@@ -56,10 +56,9 @@ public class MasterService {
         return master.get();
     }
 
-    public Iterable<Master> getAllMastersSorted(SortType type, SortOrder order) {
+    public Iterable<Master> getAllMastersSorted(SortType type) {
         return ((List<Master>) masterRepository.findAll()).stream()
                 .sorted(defineSortType(type))
-//                .sorted(defineSortOrder(order))
                 .toList();
     }
 
@@ -78,13 +77,6 @@ public class MasterService {
     public void deleteMaster(Master master) {
         masterRepository.delete(master);
     }
-
-//    private Comparator<Master> defineSortOrder(SortOrder order) {
-//        return switch (order) {
-//            case ASC -> null;
-//            case DESC -> Collections.reverseOrder();
-//        };
-//    }
 
     private Comparator<Master> defineSortType(SortType type) {
         return switch (type) {

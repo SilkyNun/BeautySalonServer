@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import project.entity.Master;
 import project.exceptions.NotFoundException;
 import project.service.MasterService;
+
+import javax.validation.Valid;
 
 import static project.service.MasterService.*;
 
@@ -36,21 +39,17 @@ public class MasterController {
 //    return list of masters sorted by creation date in ascending or descending order
     @GetMapping("/sorted")
     public ResponseEntity<Iterable<Master>> getAllMastersSortedByDate(
-            @RequestParam(value = "type", defaultValue = "percent") String type,
-            @RequestParam(value = "order", defaultValue = "asc") String order) {
-        return new ResponseEntity<>(masterService.getAllMastersSorted(
-                SortType.toSortType(type),
-                SortOrder.toSortOrder(order)
-        ), HttpStatus.OK);
+            @RequestParam(value = "type", defaultValue = "percent") String type) {
+        return new ResponseEntity<>(masterService.getAllMastersSorted(SortType.toSortType(type)), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Master> addMaster(@RequestBody Master master) {
+    public ResponseEntity<Master> addMaster(@Valid @RequestBody Master master) {
         return new ResponseEntity<>(masterService.addMaster(master), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Master> updateMaster(@RequestBody Master master) {
+    public ResponseEntity<Master> updateMaster(@Valid @RequestBody Master master) {
         return new ResponseEntity<>(masterService.updateMaster(master), HttpStatus.OK);
     }
 
@@ -63,6 +62,11 @@ public class MasterController {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException notFoundException) {
         return new ResponseEntity<>(notFoundException.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
 
 }

@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import project.entity.Order;
 import project.exceptions.NotFoundException;
 import project.model.OrderModel;
 import project.model.OrderSorted;
 import project.service.OrderService;
+
+import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
@@ -34,12 +37,12 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> addOrder(@RequestBody OrderModel orderModel) {
+    public ResponseEntity<Order> addOrder(@Valid @RequestBody OrderModel orderModel) {
         return new ResponseEntity<>(orderService.addOrder(orderModel), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Order> updateOrder(@RequestBody OrderModel order) {
+    public ResponseEntity<Order> updateOrder(@Valid @RequestBody OrderModel order) {
         return new ResponseEntity<>(orderService.updateOrder(order), HttpStatus.OK);
     }
 
@@ -52,5 +55,10 @@ public class OrderController {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException notFoundException) {
         return new ResponseEntity<>(notFoundException.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
 }
