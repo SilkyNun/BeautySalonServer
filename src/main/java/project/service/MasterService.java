@@ -1,15 +1,14 @@
 package project.service;
 
 import lombok.AllArgsConstructor;
+import org.hibernate.mapping.Collection;
 import org.springframework.stereotype.Service;
 import project.entity.Master;
 import project.exceptions.NotFoundException;
 import project.repository.MasterRepository;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service @AllArgsConstructor
 public class MasterService {
@@ -24,6 +23,18 @@ public class MasterService {
                 return SortOrder.DESC;
             }
             return SortOrder.ASC;
+        }
+    }
+
+    public enum SortType {
+        PERCENT,
+        DATE;
+
+        public static SortType toSortType(String type) {
+            if (type.equalsIgnoreCase(SortType.DATE.name())) {
+                return SortType.DATE;
+            }
+            return SortType.PERCENT;
         }
     }
 
@@ -45,9 +56,10 @@ public class MasterService {
         return master.get();
     }
 
-    public Iterable<Master> getAllMastersSorted(SortOrder order) {
+    public Iterable<Master> getAllMastersSorted(SortType type, SortOrder order) {
         return ((List<Master>) masterRepository.findAll()).stream()
-                .sorted(defineSortOrder(order))
+                .sorted(defineSortType(type))
+//                .sorted(defineSortOrder(order))
                 .toList();
     }
 
@@ -67,10 +79,17 @@ public class MasterService {
         masterRepository.delete(master);
     }
 
-    private Comparator<Master> defineSortOrder(SortOrder order) {
-        return switch (order) {
-            case ASC -> (m1, m2) -> m1.getCreatedAt().compareTo(m2.getCreatedAt());
-            case DESC -> (m1, m2) -> m2.getCreatedAt().compareTo(m1.getCreatedAt());
+//    private Comparator<Master> defineSortOrder(SortOrder order) {
+//        return switch (order) {
+//            case ASC -> null;
+//            case DESC -> Collections.reverseOrder();
+//        };
+//    }
+
+    private Comparator<Master> defineSortType(SortType type) {
+        return switch (type) {
+            case DATE -> Comparator.comparing(Master::getCreatedAt).reversed();
+            case PERCENT -> Comparator.comparing(Master::getPercent).reversed();
         };
     }
 

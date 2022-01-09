@@ -35,9 +35,13 @@ public class MasterController {
 
 //    return list of masters sorted by creation date in ascending or descending order
     @GetMapping("/sorted")
-    public ResponseEntity<Iterable<Master>> getAllMastersSorted(
+    public ResponseEntity<Iterable<Master>> getAllMastersSortedByDate(
+            @RequestParam(value = "type", defaultValue = "percent") String type,
             @RequestParam(value = "order", defaultValue = "asc") String order) {
-        return new ResponseEntity<>(masterService.getAllMastersSorted(SortOrder.toSortOrder(order)), HttpStatus.OK);
+        return new ResponseEntity<>(masterService.getAllMastersSorted(
+                SortType.toSortType(type),
+                SortOrder.toSortOrder(order)
+        ), HttpStatus.OK);
     }
 
     @PostMapping
