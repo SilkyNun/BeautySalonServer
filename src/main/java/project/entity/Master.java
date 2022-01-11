@@ -22,7 +22,7 @@ public class Master {
     @NotBlank
     private String name;
     @NotNull
-    @Pattern(regexp = "^(80|\\+375)\\(\\d{2}\\)\\d{3}-\\d{2}-\\d{2}$")
+    @Pattern(regexp = "^(80|\\+375)(\\s|\\()\\d{2}(\\s|\\))\\d{3}-\\d{2}-\\d{2}$")
     private String tel;
     @NotNull
     @DecimalMin(value = "0.00")
