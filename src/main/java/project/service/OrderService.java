@@ -75,13 +75,13 @@ public class OrderService {
     public Iterable<OrderSorted> getOrdersByDate() {
         Collection<Order> ordersRaw = (Collection<Order>) orderRepository.findAll();
         List<OrderSorted> list = ordersRaw.stream()
-//                .filter(order -> order.getStart().isAfter(LocalDateTime.now()))
+                .filter(order -> order.getStart().isAfter(LocalDateTime.now()))
                 .collect(Collectors.groupingBy(order -> order.getStart().getDayOfMonth()))
                 .values().stream()
                 .map(orders -> new OrderSorted(orders.get(0).getStart().format(DateTimeFormatter.ofPattern("dd MMMM", Locale.forLanguageTag("ru-RU"))), orders))
+                .sorted(Comparator.comparing(os -> os.getOrders().get(0).getStart()))
                 .toList();
         list.forEach(orderSorted -> orderSorted.getOrders().sort(Comparator.comparing(Order::getStart)));
-        log.info(list.toString());
         return list;
     }
 

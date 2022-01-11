@@ -23,6 +23,8 @@ public class OrderModel {
     @NotNull
     @DecimalMin(value = "0.00")
     private Double price;
+    @NotBlank
+    private String area;
     @NotNull
     private LocalDateTime start;
     @NotNull
@@ -41,6 +43,7 @@ public class OrderModel {
         order.setPrice(orderModel.getPrice());
         order.setStart(orderModel.getStart());
         order.setFinish(orderModel.getFinish());
+        order.setArea(orderModel.getArea());
         return order;
     }
 }
