@@ -78,6 +78,10 @@ public class MasterService {
         masterRepository.delete(master);
     }
 
+    public void deleteMasterById(Long id) {
+        masterRepository.deleteById(id);
+    }
+
     private Comparator<Master> defineSortType(SortType type) {
         return switch (type) {
             case DATE -> Comparator.comparing(Master::getCreatedAt).reversed();

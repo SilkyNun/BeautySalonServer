@@ -59,6 +59,12 @@ public class MasterController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteMasterById(@PathVariable("id") Long id) {
+        masterService.deleteMasterById(id);
+        return ResponseEntity.ok().build();
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException notFoundException) {
         return new ResponseEntity<>(notFoundException.getMessage(), HttpStatus.NOT_FOUND);

@@ -46,6 +46,12 @@ public class ClientController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteClientById(@PathVariable("id") Long id) {
+        clientService.deleteClientById(id);
+        return ResponseEntity.ok().build();
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException notFoundException) {
         return new ResponseEntity<>(notFoundException.getMessage(), HttpStatus.NOT_FOUND);
