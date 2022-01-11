@@ -10,6 +10,7 @@ import project.model.SalonStatistics;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -85,6 +86,7 @@ public class StatisticsService {
         return master.getOrders().stream()
                 .filter(order -> order.getFinish().getDayOfMonth() == LocalDateTime.now().getDayOfMonth())
                 .map(Order::getPrice)
+                .filter(Objects::nonNull)
                 .reduce(0d, Double::sum);
     }
 
@@ -92,6 +94,7 @@ public class StatisticsService {
         return master.getOrders().stream()
                 .filter(order -> order.getFinish().getMonthValue() == LocalDateTime.now().getMonthValue())
                 .map(Order::getPrice)
+                .filter(Objects::nonNull)
                 .reduce(0d, Double::sum);
     }
 

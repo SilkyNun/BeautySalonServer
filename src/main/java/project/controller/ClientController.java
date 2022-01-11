@@ -40,6 +40,15 @@ public class ClientController {
         return new ResponseEntity<>(clientService.updateClient(client), HttpStatus.OK);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<Client> updateClientById(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody Client client) {
+        client.setId(id);
+        return new ResponseEntity<>(clientService.updateClient(client), HttpStatus.OK);
+    }
+
+
     @DeleteMapping
     public ResponseEntity<?> deleteClient(@RequestBody Client client) {
         clientService.removeClient(client);

@@ -46,9 +46,22 @@ public class OrderController {
         return new ResponseEntity<>(orderService.updateOrder(order), HttpStatus.OK);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<Order> updateOrderById(@PathVariable("id") Long id,
+                                                 @Valid @RequestBody OrderModel orderModel) {
+        orderModel.setId(id);
+        return new ResponseEntity<>(orderService.updateOrder(orderModel), HttpStatus.OK);
+    }
+
     @DeleteMapping
     public ResponseEntity<?> deleteOrder(@RequestBody Order order) {
         orderService.deleteOrder(order);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteOrderById(@PathVariable("id") Long id) {
+        orderService.deleteOrderById(id);
         return ResponseEntity.ok().build();
     }
 

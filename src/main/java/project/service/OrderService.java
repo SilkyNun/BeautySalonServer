@@ -3,6 +3,7 @@ package project.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import project.entity.Addon;
 import project.entity.Client;
 import project.entity.Master;
 import project.entity.Order;
@@ -28,14 +29,17 @@ import java.util.stream.Collectors;
 public class OrderService {
     private MasterService masterService;
     private ClientService clientService;
+    private AddonService addonService;
     private OrderRepository orderRepository;
 
     public Order addOrder(OrderModel orderModel) {
         Master master = masterService.getMasterById(orderModel.getMasterId());
         Client client = clientService.getClientById(orderModel.getClientId());
+        List<Addon> addons = addonService.getAddonsByIds(orderModel.getAddonsIds());
         Order order = OrderModel.toOrder(orderModel);
         order.setMaster(master);
         order.setClient(client);
+        order.setAddons(addons);
         return orderRepository.save(order);
     }
 
@@ -55,6 +59,7 @@ public class OrderService {
         Order orderUpd = getOrderById(orderModel.getId());
         orderUpd.setClient(orderModel.getClientId() == null ? orderUpd.getClient() : clientService.getClientById(orderModel.getClientId()));
         orderUpd.setMaster(orderModel.getMasterId() == null ? orderUpd.getMaster() : masterService.getMasterById(orderModel.getMasterId()));
+        orderUpd.setAddons(orderModel.getAddonsIds().isEmpty() ? orderUpd.getAddons() : addonService.getAddonsByIds(orderModel.getAddonsIds()));
         orderUpd.setPrice(orderModel.getPrice() == null ? orderUpd.getPrice() : orderModel.getPrice());
         orderUpd.setStart(orderModel.getStart() == null ? orderUpd.getStart() : orderModel.getStart());
         orderUpd.setFinish(orderModel.getFinish() == null ? orderUpd.getFinish() : orderModel.getFinish());
@@ -78,5 +83,9 @@ public class OrderService {
         list.forEach(orderSorted -> orderSorted.getOrders().sort(Comparator.comparing(Order::getStart)));
         log.info(list.toString());
         return list;
+    }
+
+    public void deleteOrderById(Long id) {
+        orderRepository.deleteById(id);
     }
 }

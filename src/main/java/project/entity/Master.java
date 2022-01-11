@@ -59,15 +59,4 @@ public class Master {
         return Objects.hash(id, name, tel, percent, accounts, orders);
     }
 
-    @Override
-    public String toString() {
-        return "Master{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", tel='" + tel + '\'' +
-                ", percent=" + percent +
-                ", accounts=" + accounts +
-                ", orders=" + orders +
-                '}';
-    }
 }

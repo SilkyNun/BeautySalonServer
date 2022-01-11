@@ -53,6 +53,13 @@ public class MasterController {
         return new ResponseEntity<>(masterService.updateMaster(master), HttpStatus.OK);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<Master> updateMasterById(@PathVariable("id") Long id,
+                                                   @Valid @RequestBody Master master) {
+        master.setId(id);
+        return new ResponseEntity<>(masterService.updateMaster(master), HttpStatus.OK);
+    }
+
     @DeleteMapping
     public ResponseEntity<?> deleteMaster(@RequestBody Master master) {
         masterService.deleteMaster(master);

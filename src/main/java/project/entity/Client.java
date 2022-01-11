@@ -44,14 +44,4 @@ public class Client {
     public int hashCode() {
         return Objects.hash(id, name, tel, orders);
     }
-
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", tel='" + tel + '\'' +
-                ", orders=" + orders +
-                '}';
-    }
 }

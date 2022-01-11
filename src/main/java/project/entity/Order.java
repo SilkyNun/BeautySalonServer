@@ -11,6 +11,8 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +30,9 @@ public class Order {
     private LocalDateTime start;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime finish;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable
+    private List<Addon> addons = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "master_id")
 //    @JsonIgnore
@@ -67,5 +72,18 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(id, price, start, finish);
+    }
+
+    @Override
+public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", price=" + price +
+                ", start=" + start +
+                ", finish=" + finish +
+                ", addons=" + addons +
+                ", master=" + master +
+                ", client=" + client +
+                '}';
     }
 }

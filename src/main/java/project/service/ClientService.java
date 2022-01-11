@@ -43,6 +43,6 @@ public class ClientService {
     }
 
     public void deleteClientById(Long id) {
-        clientRepository.deleteById(id);
+clientRepository.deleteById(id);
     }
 }
